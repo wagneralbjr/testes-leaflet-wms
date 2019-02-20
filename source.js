@@ -13,19 +13,23 @@ var s = L.WMS.source("http://localhost:8080/geoserver/grade-estatistica/wms", {
 $.extend(s,
 	{
 		'ajax': function(url, callback) {
+			// Envia mais um argumento para uqe o geoserver, retorne JSON ao inves de HTML.
+			url = url + '&info_format=application/json'
+			console.log('xxx url',url)
 	        $.ajax(url, {
 	            'context': this,
 	            'success': function(result) {
-	            	console.log(result)
+	            	//console.log(result)
 	                callback.call(this, result);
 	             }
 	        });
     	},
     'showFeatureInfo': function(latlng, info) {
     	console.log('xxx info', info)
-        $('.output').html(info);
+    	this._map.openPopup(String(info.features[0].properties.nm_municip), latlng);
+        //$('.output').html(info);
     	}
-	},
+},
 	
 );
 
